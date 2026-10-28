@@ -1,0 +1,146 @@
+{
+  "when": "2026-10-29T06:51:26",
+  "base": "http://127.0.0.1:8960",
+  "passed": 10,
+  "total": 10,
+  "elapsed_s": 141.4,
+  "results": [
+    {
+      "scenario": "S1 匿名凭证铸造",
+      "ok": true,
+      "detail": "3/3 成功, uid 全不重复=True, 延迟 [1.82, 1.82, 2.62]s",
+      "extra": {
+        "uid_unique": 3,
+        "latency_s": [
+          1.82,
+          1.82,
+          2.62
+        ]
+      }
+    },
+    {
+      "scenario": "S2 免费额度 5 次/uid",
+      "ok": true,
+      "detail": "成功 5/5 后 LIMIT 命中 1 次, left 轨迹 [4, 3, 2, 1, 0]",
+      "extra": {
+        "ok": 5,
+        "limit_hits": 1,
+        "left_trace": [
+          4,
+          3,
+          2,
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "scenario": "S3 isPro=true 额度绕过",
+      "ok": true,
+      "detail": "额度耗尽后 isPro=true 连打 8 次成功 8/8, left 轨迹 [-1, -2, -3, -4, -5, -6, -7, -8]",
+      "extra": {
+        "ok": 8,
+        "left_trace": [
+          -1,
+          -2,
+          -3,
+          -4,
+          -5,
+          -6,
+          -7,
+          -8
+        ]
+      }
+    },
+    {
+      "scenario": "S4 模型矩阵（含未知 id）",
+      "ok": true,
+      "detail": "6/6 返回 200 · 上游对未知 id 不报错（回落到默认模型）",
+      "extra": {
+        "rows": [
+          {
+            "model": "gpt-4o-mini",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "model": "gpt-4o",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "model": "gpt-4.5-preview",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "model": "deepseek-chat",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "model": "gemini-2.0-flash",
+            "status": 200,
+            "ok": true
+          },
+          {
+            "model": "definitely-not-a-model",
+            "status": 200,
+            "ok": true
+          }
+        ]
+      }
+    },
+    {
+      "scenario": "S5 并发 24 请求",
+      "ok": true,
+      "detail": "24/24 200 · wall 19.3s · p50 4806ms p95 7438ms · 1.25 req/s",
+      "extra": {
+        "ok": 24,
+        "wall_s": 19.26,
+        "p50_ms": 4806,
+        "p95_ms": 7438,
+        "rps": 1.25
+      }
+    },
+    {
+      "scenario": "S6 多轮上下文",
+      "ok": true,
+      "detail": "回放提问命中=true · 回复='VELVET-9'",
+      "extra": {}
+    },
+    {
+      "scenario": "S7 上游升级横幅剥离",
+      "ok": true,
+      "detail": "3 次采样中残留 0 次 · 样例=['# Hello! 👋\\n\\nHow can I assist you today?']",
+      "extra": {}
+    },
+    {
+      "scenario": "S8 错误分支",
+      "ok": true,
+      "detail": "{\"no_auth=401\": true, \"bad_key=401\": true, \"empty_messages=422\": true, \"upstream_bad_token=401\": true}",
+      "extra": {}
+    },
+    {
+      "scenario": "S9 生图（base64 PNG）",
+      "ok": true,
+      "detail": "16.6s · 1077 KB · PNG 魔数=ok",
+      "extra": {
+        "elapsed_s": 16.6,
+        "kb": 1077,
+        "png": true
+      }
+    },
+    {
+      "scenario": "S10 SSE 分块一致性",
+      "ok": true,
+      "detail": "chunks=17 · DONE=True · 拼接长度=17 · 非流式长度=17",
+      "extra": {
+        "chunks": 17,
+        "done": true,
+        "stream_len": 17,
+        "json_len": 17
+      }
+    }
+  ]
+}

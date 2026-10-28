@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AI Chat 1.4.28 · 2API 本地 Demo</title>
+<style>
+  :root{--bg:#0b0d12;--card:#151922;--line:#242a36;--txt:#e7ecf5;--dim:#8b94a7;--acc:#5b8cff;--ok:#31c48d;--err:#f05252}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--txt);font:14px/1.6 -apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+  header{display:flex;gap:12px;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line);background:#0e1118;position:sticky;top:0;z-index:5}
+  header h1{font-size:15px;margin:0;font-weight:600}
+  .badge{font-size:11px;padding:2px 8px;border-radius:99px;border:1px solid var(--line);color:var(--dim)}
+  .badge.ok{color:var(--ok);border-color:#1d4034}
+  .wrap{display:grid;grid-template-columns:1fr 300px;gap:16px;padding:16px 20px;max-width:1240px;margin:0 auto}
+  @media(max-width:900px){.wrap{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;display:flex;flex-direction:column;min-height:70vh}
+  .tabs{display:flex;gap:6px;padding:10px 12px;border-bottom:1px solid var(--line)}
+  .tab{padding:6px 12px;border-radius:8px;background:transparent;border:1px solid transparent;color:var(--dim);cursor:pointer;font-size:13px}
+  .tab.active{background:#1b2230;border-color:var(--line);color:var(--txt)}
+  #log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:86%;padding:10px 13px;border-radius:12px;white-space:pre-wrap;word-break:break-word}
+  .msg.user{align-self:flex-end;background:#22406e}
+  .msg.assistant{align-self:flex-start;background:#1b2230;border:1px solid var(--line)}
+  .msg.err{align-self:flex-start;background:#3a1c1c;border:1px solid #6b2626;color:#ffb4b4}
+  .meta{font-size:11px;color:var(--dim);margin-top:6px}
+  .composer{display:flex;gap:8px;padding:12px;border-top:1px solid var(--line)}
+  textarea{flex:1;resize:none;height:54px;background:#10141c;border:1px solid var(--line);color:var(--txt);border-radius:10px;padding:9px 11px;font:inherit}
+  button{background:var(--acc);color:#fff;border:0;border-radius:10px;padding:0 18px;font-weight:600;cursor:pointer;height:54px}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .side{display:flex;flex-direction:column;gap:12px}
+  .side .panel{min-height:auto;padding:14px}
+  label{display:block;font-size:12px;color:var(--dim);margin:10px 0 4px}
+  select,input{width:100%;background:#10141c;border:1px solid var(--line);color:var(--txt);border-radius:8px;padding:8px 10px;font:inherit}
+  .kv{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;color:var(--dim)}
+  .kv b{color:var(--txt);font-weight:600}
+  #imgOut img{max-width:100%;border-radius:10px;margin-top:10px;border:1px solid var(--line)}
+  .hint{font-size:11px;color:var(--dim);line-height:1.5}
+  code{background:#10141c;padding:1px 5px;border-radius:5px;font-size:12px}
+</style>
+</head>
+<body>
+<header>
+  <h1>AI Chat 1.4.28 · 2API Demo</h1>
+  <span class="badge" id="modeBadge">…</span>
+  <span class="badge" id="proBadge">…</span>
+  <span class="badge" id="poolBadge">pool …</span>
+</header>
+
+<div class="wrap">
+  <div class="panel">
+    <div class="tabs">
+      <button class="tab active" id="tabChat">对话</button>
+      <button class="tab" id="tabImage">生图</button>
+      <span style="flex:1"></span>
+      <button class="tab" id="clearBtn">清空</button>
+    </div>
+    <div id="log"></div>
+    <div class="composer">
+      <textarea id="input" placeholder="输入消息…（Enter 发送，Shift+Enter 换行）"></textarea>
+      <button id="sendBtn">发送</button>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="panel">
+      <div style="font-weight:600;font-size:13px">请求参数</div>
+      <label>模型</label>
+      <select id="model"></select>
+      <label>流式 (SSE)</label>
+      <select id="stream"><option value="1">stream=true</option><option value="0">stream=false</option></select>
+      <label>API Key（任意非空值）</label>
+      <input id="apikey" value="sk-local-demo"/>
+      <label>多轮上下文</label>
+      <select id="multi"><option value="1">携带历史</option><option value="0">仅当前消息</option></select>
+    </div>
+    <div class="panel">
+      <div style="font-weight:600;font-size:13px">运行状态</div>
+      <div class="kv"><span>模式</span><b id="stMode">-</b></div>
+      <div class="kv"><span>isPro 上报</span><b id="stPro">-</b></div>
+      <div class="kv"><span>请求次数</span><b id="stReq">0</b></div>
+      <div class="kv"><span>上游成功/失败</span><b id="stUp">0/0</b></div>
+      <div class="kv"><span>凭证轮换</span><b id="stRot">0</b></div>
+      <div class="kv"><span>p50 延迟</span><b id="stLat">-</b></div>
+      <div class="kv"><span>本次耗时</span><b id="stLast">-</b></div>
+      <button class="tab" id="refreshBtn" style="width:100%;margin-top:10px">刷新状态</button>
+    </div>
+    <div class="panel" id="imgOut">
+      <div style="font-weight:600;font-size:13px">生图结果</div>
+      <div class="hint">切换上方「生图」标签后，输入提示词发送；上游返回 base64 PNG。</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id);
+let mode = "chat";
+let history = [];
+let busy = false;
+
+async function loadModels() {
+  try {
+    const r = await fetch("/v1/models", {headers: {"Authorization": "Bearer " + $("apikey").value}});
+    const j = await r.json();
+    $("model").innerHTML = (j.data || []).map(m => `<option value="${m.id}">${m.id}${m.id==="gpt-4o-mini"?" (free)":""}</option>`).join("");
+  } catch (e) {
+    $("model").innerHTML = `<option>gpt-4o-mini</option>`;
+  }
+}
+
+async function loadHealth() {
+  try {
+    const r = await fetch("/health");
+    const j = await r.json();
+    $("modeBadge").textContent = "mode: " + j.mode;
+    $("modeBadge").className = "badge ok";
+    $("proBadge").textContent = "isPro: " + (j.is_pro ? "true" : "false");
+    $("proBadge").className = "badge " + (j.is_pro ? "ok" : "");
+    $("poolBadge").textContent = "pool " + j.pool.size;
+    $("stMode").textContent = j.mode;
+    $("stPro").textContent = String(j.is_pro);
+    $("stReq").textContent = j.stats.requests;
+    $("stUp").textContent = j.stats.upstream_ok + "/" + j.stats.upstream_err;
+    $("stRot").textContent = j.stats.quota_rotations;
+    $("stLat").textContent = j.stats.latency_p50_ms == null ? "-" : j.stats.latency_p50_ms + " ms";
+  } catch (e) { /* server not up yet */ }
+}
+
+function bubble(role, text, meta) {
+  const d = document.createElement("div");
+  d.className = "msg " + role;
+  d.textContent = text;
+  if (meta) {
+    const m = document.createElement("div");
+    m.className = "meta";
+    m.textContent = meta;
+    d.appendChild(m);
+  }
+  $("log").appendChild(d);
+  $("log").scrollTop = $("log").scrollHeight;
+  return d;
+}
+
+async function sendChat() {
+  const text = $("input").value.trim();
+  if (!text || busy) return;
+  busy = true; $("sendBtn").disabled = true;
+  bubble("user", text);
+  $("input").value = "";
+  const model = $("model").value;
+  const useStream = $("stream").value === "1";
+  const withHistory = $("multi").value === "1";
+  const msgs = withHistory ? [...history, {role: "user", content: text}] : [{role: "user", content: text}];
+  const out = bubble("assistant", "…");
+  const t0 = performance.now();
+
+  try {
+    const r = await fetch("/v1/chat/completions", {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer " + $("apikey").value},
+      body: JSON.stringify({model, messages: msgs, stream: useStream})
+    });
+    if (!r.ok) {
+      const err = await r.json().catch(() => ({}));
+      out.className = "msg err";
+      out.textContent = "HTTP " + r.status + " · " + JSON.stringify(err);
+      busy = false; $("sendBtn").disabled = false; return;
+    }
+    if (useStream) {
+      const reader = r.body.getReader();
+      const dec = new TextDecoder();
+      let buf = "", full = "";
+      out.textContent = "";
+      while (true) {
+        const {done, value} = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, {stream: true});
+        let idx;
+        while ((idx = buf.indexOf("\n\n")) >= 0) {
+          const line = buf.slice(0, idx).trim();
+          buf = buf.slice(idx + 2);
+          if (!line.startsWith("data:")) continue;
+          const payload = line.slice(5).trim();
+          if (payload === "[DONE]") continue;
+          try {
+            const j = JSON.parse(payload);
+            const piece = j.choices?.[0]?.delta?.content;
+            if (piece) { full += piece; out.textContent = full; $("log").scrollTop = $("log").scrollHeight; }
+          } catch (_) {}
+        }
+      }
+      out.textContent = full;
+      out.dataset.full = full;
+      history.push({role: "user", content: text}, {role: "assistant", content: full});
+    } else {
+      const j = await r.json();
+      const content = j.choices?.[0]?.message?.content || "(空)";
+      out.textContent = content;
+      history.push({role: "user", content: text}, {role: "assistant", content});
+    }
+    const dt = Math.round(performance.now() - t0);
+    $("stLast").textContent = dt + " ms";
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    meta.textContent = `${model} · ${useStream ? "SSE" : "JSON"} · ${dt} ms`;
+    out.appendChild(meta);
+  } catch (e) {
+    out.className = "msg err";
+    out.textContent = "请求失败: " + e;
+  } finally {
+    busy = false; $("sendBtn").disabled = false; loadHealth();
+  }
+}
+
+async function sendImage() {
+  const prompt = $("input").value.trim();
+  if (!prompt || busy) return;
+  busy = true; $("sendBtn").disabled = true;
+  bubble("user", "[生图] " + prompt);
+  $("input").value = "";
+  const holder = document.createElement("div");
+  holder.className = "hint";
+  holder.textContent = "生成中（上游约 10-25s）…";
+  $("log").appendChild(holder);
+  const t0 = performance.now();
+  try {
+    const r = await fetch("/v1/images/generations", {
+      method: "POST",
+      headers: {"Content-Type": "application/json", "Authorization": "Bearer " + $("apikey").value},
+      body: JSON.stringify({model: $("model").value, prompt, response_format: "b64_json"})
+    });
+    const j = await r.json();
+    if (!r.ok) { holder.textContent = "HTTP " + r.status + " · " + JSON.stringify(j); }
+    else {
+      const b64 = j.data?.[0]?.b64_json || "";
+      holder.remove();
+      const img = document.createElement("img");
+      img.src = "data:image/png;base64," + b64;
+      $("imgOut").appendChild(img);
+      const box = document.createElement("img");
+      box.src = img.src;
+      $("log").appendChild(box);
+      box.style.maxWidth = "70%"; box.style.borderRadius = "10px"; box.style.alignSelf = "flex-start";
+      const dt = Math.round(performance.now() - t0);
+      bubble("assistant", "图片已生成 · " + dt + " ms · base64 " + Math.round(b64.length / 1024) + " KB");
+    }
+  } catch (e) { holder.textContent = "失败: " + e; }
+  finally { busy = false; $("sendBtn").disabled = false; loadHealth(); }
+}
+
+function setMode(m) {
+  mode = m;
+  $("tabChat").classList.toggle("active", m === "chat");
+  $("tabImage").classList.toggle("active", m === "image");
+  $("input").placeholder = m === "chat" ? "输入消息…（Enter 发送，Shift+Enter 换行）" : "输入生图提示词…（Enter 生成）";
+}
+
+$("tabChat").onclick = () => setMode("chat");
+$("tabImage").onclick = () => setMode("image");
+$("clearBtn").onclick = () => { $("log").innerHTML = ""; history = []; $("imgOut").innerHTML = '<div style="font-weight:600;font-size:13px">生图结果</div>'; };
+$("refreshBtn").onclick = loadHealth;
+$("sendBtn").onclick = () => (mode === "chat" ? sendChat() : sendImage());
+$("input").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && !e.shiftKey) {
+    e.preventDefault();
+    mode === "chat" ? sendChat() : sendImage();
+  }
+});
+
+loadModels(); loadHealth(); setInterval(loadHealth, 5000);
+</script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+{
+  "when": "2026-10-29T07:27:04",
+  "target": "gateway",
+  "base": "http://127.0.0.1:8960",
+  "elapsed_s": 137.5,
+  "summary": [
+    {
+      "stage": "C soak C=5 60s",
+      "total": 48,
+      "ok": 43,
+      "fail": 5,
+      "success_rate": 89.6,
+      "p50_ms": 1981,
+      "p90_ms": 110732,
+      "p95_ms": 111977,
+      "p99_ms": 112605,
+      "max_ms": 112605,
+      "rps": 2.25,
+      "status_codes": {
+        "200": 43,
+        "502": 5
+      },
+      "reasons": {
+        "(none)": 48
+      },
+      "errors": {
+        "{\"error\":{\"message\":\"transport failure: URLError(ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None))\",\"": 1,
+        "{\"error\":{\"message\":\"transport failure: ConnectionResetError(10054, '远程主机强迫关闭了一个现有的连接。', None, 10054, None)\",\"type\":\"ups": 4
+      },
+      "aborted": false,
+      "note": ""
+    },
+    {
+      "stage": "B sweep C=20 x1",
+      "total": 20,
+      "ok": 20,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 4403,
+      "p90_ms": 4524,
+      "p95_ms": 5361,
+      "p99_ms": 5361,
+      "max_ms": 5361,
+      "rps": 1016.91,
+      "status_codes": {
+        "200": 20
+      },
+      "reasons": {
+        "(none)": 20
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    }
+  ]
+}

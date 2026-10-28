@@ -1,0 +1,71 @@
+{
+  "when": "2026-10-29T07:07:20",
+  "target": "upstream",
+  "base": "chatadmin.org",
+  "elapsed_s": 281.3,
+  "summary": [
+    {
+      "stage": "A baseline 1rps/30s",
+      "total": 30,
+      "ok": 30,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 3,
+      "p90_ms": 19,
+      "p99_ms": 35,
+      "max_ms": 35,
+      "rps": 0.13,
+      "status_codes": {
+        "200": 30
+      },
+      "reasons": {
+        "(none)": 30
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    },
+    {
+      "stage": "B sweep C=20 x2",
+      "total": 40,
+      "ok": 40,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 3,
+      "p90_ms": 4,
+      "p99_ms": 18,
+      "max_ms": 18,
+      "rps": 10.9,
+      "status_codes": {
+        "200": 40
+      },
+      "reasons": {
+        "(none)": 40
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    },
+    {
+      "stage": "B sweep C=40 x2",
+      "total": 80,
+      "ok": 80,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 3,
+      "p90_ms": 4,
+      "p99_ms": 19,
+      "max_ms": 19,
+      "rps": 4.21,
+      "status_codes": {
+        "200": 80
+      },
+      "reasons": {
+        "(none)": 80
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    }
+  ]
+}

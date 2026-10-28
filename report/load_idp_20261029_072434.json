@@ -1,0 +1,39 @@
+{
+  "when": "2026-10-29T07:24:34",
+  "target": "idp",
+  "base": "chatadmin.org",
+  "elapsed_s": 23.3,
+  "summary": [
+    {
+      "stage": "D idp flood x10",
+      "total": 10,
+      "ok": 10,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 729,
+      "p90_ms": 1571,
+      "p95_ms": 1571,
+      "p99_ms": 1571,
+      "max_ms": 1571,
+      "rps": 0.47,
+      "status_codes": {
+        "200": 10
+      },
+      "reasons": {
+        "uid:DrzqKy": 1,
+        "uid:2x2ONC": 1,
+        "uid:Ghkfxc": 1,
+        "uid:BPgMPT": 1,
+        "uid:lXVMit": 1,
+        "uid:MelWU7": 1,
+        "uid:ZBOErh": 1,
+        "uid:LLLGXL": 1,
+        "uid:6X08Vc": 1,
+        "uid:cT7xrE": 1
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "when": "2026-10-29T07:24:01",
+  "target": "upstream",
+  "base": "chatadmin.org",
+  "elapsed_s": 79.5,
+  "summary": [
+    {
+      "stage": "C soak C=5 60s",
+      "total": 261,
+      "ok": 261,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 1056,
+      "p90_ms": 1271,
+      "p95_ms": 1353,
+      "p99_ms": 5052,
+      "max_ms": 5239,
+      "rps": 4.36,
+      "status_codes": {
+        "200": 261
+      },
+      "reasons": {
+        "(none)": 261
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    },
+    {
+      "stage": "E uid fanout 1uid x5",
+      "total": 5,
+      "ok": 5,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 2453,
+      "p90_ms": 3384,
+      "p95_ms": 3384,
+      "p99_ms": 3384,
+      "max_ms": 3384,
+      "rps": 2066.57,
+      "status_codes": {
+        "200": 5
+      },
+      "reasons": {
+        "(none)": 5
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    },
+    {
+      "stage": "F long context 10 turns",
+      "total": 10,
+      "ok": 10,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 1133,
+      "p90_ms": 2895,
+      "p95_ms": 2895,
+      "p99_ms": 2895,
+      "max_ms": 2895,
+      "rps": 0.83,
+      "status_codes": {
+        "200": 10
+      },
+      "reasons": {
+        "(none)": 10
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    }
+  ]
+}

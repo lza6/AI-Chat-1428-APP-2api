@@ -1,0 +1,6 @@
+{
+  "_comment": "复制成 config.local.json 并填入从 APK 提取的值，见 docs/PROTOCOL.md §0",
+  "firebase_api_key": "REPLACE_ME_FIREBASE_WEB_API_KEY",
+  "firebase_app_id": "REPLACE_ME_FIREBASE_APP_ID",
+  "firebase_project": "REPLACE_ME_FIREBASE_PROJECT_ID"
+}

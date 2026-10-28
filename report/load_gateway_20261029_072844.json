@@ -1,0 +1,54 @@
+{
+  "when": "2026-10-29T07:28:44",
+  "target": "gateway",
+  "base": "http://127.0.0.1:8960",
+  "elapsed_s": 63.8,
+  "summary": [
+    {
+      "stage": "C soak C=4 60s",
+      "total": 125,
+      "ok": 125,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 1917,
+      "p90_ms": 2149,
+      "p95_ms": 2218,
+      "p99_ms": 2881,
+      "max_ms": 3143,
+      "rps": 2.03,
+      "wall_s": 61.6,
+      "status_codes": {
+        "200": 125
+      },
+      "reasons": {
+        "(none)": 125
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    },
+    {
+      "stage": "B sweep C=20 x1",
+      "total": 20,
+      "ok": 20,
+      "fail": 0,
+      "success_rate": 100.0,
+      "p50_ms": 1978,
+      "p90_ms": 2149,
+      "p95_ms": 2155,
+      "p99_ms": 2155,
+      "max_ms": 2155,
+      "rps": 9.27,
+      "wall_s": 2.2,
+      "status_codes": {
+        "200": 20
+      },
+      "reasons": {
+        "(none)": 20
+      },
+      "errors": {},
+      "aborted": false,
+      "note": ""
+    }
+  ]
+}

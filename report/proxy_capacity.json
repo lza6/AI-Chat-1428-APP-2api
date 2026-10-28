@@ -1,0 +1,65 @@
+{
+  "when": "2026-10-29T07:22:20",
+  "rows": [
+    {
+      "concurrency": 1,
+      "requests": 1,
+      "ok": 1,
+      "success_rate": 100.0,
+      "wall_s": 2.1,
+      "p50_ms": 2088,
+      "p95_ms": 2088,
+      "max_ms": 2088,
+      "rps": 0.48,
+      "errors": {}
+    },
+    {
+      "concurrency": 2,
+      "requests": 2,
+      "ok": 2,
+      "success_rate": 100.0,
+      "wall_s": 2.9,
+      "p50_ms": 2877,
+      "p95_ms": 2877,
+      "max_ms": 2877,
+      "rps": 0.69,
+      "errors": {}
+    },
+    {
+      "concurrency": 3,
+      "requests": 3,
+      "ok": 3,
+      "success_rate": 100.0,
+      "wall_s": 2.1,
+      "p50_ms": 2050,
+      "p95_ms": 2123,
+      "max_ms": 2123,
+      "rps": 1.41,
+      "errors": {}
+    },
+    {
+      "concurrency": 5,
+      "requests": 5,
+      "ok": 5,
+      "success_rate": 100.0,
+      "wall_s": 2.0,
+      "p50_ms": 1955,
+      "p95_ms": 1994,
+      "max_ms": 1994,
+      "rps": 2.5,
+      "errors": {}
+    },
+    {
+      "concurrency": 8,
+      "requests": 8,
+      "ok": 8,
+      "success_rate": 100.0,
+      "wall_s": 7.0,
+      "p50_ms": 4436,
+      "p95_ms": 6985,
+      "max_ms": 6985,
+      "rps": 1.14,
+      "errors": {}
+    }
+  ]
+}

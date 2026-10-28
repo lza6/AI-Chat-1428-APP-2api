@@ -1,0 +1,20 @@
+# credentials
+config.local.json
+
+# runtime state
+data/
+*.log
+logs/
+
+# reverse-engineering inputs / intermediates (large, not shipped)
+apk/
+apktool_out/
+probe/
+*.apk
+report/decompiled.js
+report/hbc-header.txt
+
+# python
+__pycache__/
+*.pyc
+.venv/
