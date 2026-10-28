@@ -1,20 +1,20 @@
 {
-  "when": "2026-10-29T06:51:26",
+  "when": "2026-10-29T07:52:41",
   "base": "http://127.0.0.1:8960",
   "passed": 10,
   "total": 10,
-  "elapsed_s": 141.4,
+  "elapsed_s": 72.0,
   "results": [
     {
       "scenario": "S1 匿名凭证铸造",
       "ok": true,
-      "detail": "3/3 成功, uid 全不重复=True, 延迟 [1.82, 1.82, 2.62]s",
+      "detail": "3/3 成功, uid 全不重复=True, 延迟 [1.56, 1.8, 0.73]s",
       "extra": {
         "uid_unique": 3,
         "latency_s": [
-          1.82,
-          1.82,
-          2.62
+          1.56,
+          1.8,
+          0.73
         ]
       }
     },
@@ -94,13 +94,13 @@
     {
       "scenario": "S5 并发 24 请求",
       "ok": true,
-      "detail": "24/24 200 · wall 19.3s · p50 4806ms p95 7438ms · 1.25 req/s",
+      "detail": "24/24 200 · wall 13.0s · p50 4116ms p95 5395ms · 1.84 req/s",
       "extra": {
         "ok": 24,
-        "wall_s": 19.26,
-        "p50_ms": 4806,
-        "p95_ms": 7438,
-        "rps": 1.25
+        "wall_s": 13.04,
+        "p50_ms": 4116,
+        "p95_ms": 5395,
+        "rps": 1.84
       }
     },
     {
@@ -112,7 +112,7 @@
     {
       "scenario": "S7 上游升级横幅剥离",
       "ok": true,
-      "detail": "3 次采样中残留 0 次 · 样例=['# Hello! 👋\\n\\nHow can I assist you today?']",
+      "detail": "3 次采样中残留 0 次 · 样例=['# Hi there! 👋\\n\\nHow can I assist you today?']",
       "extra": {}
     },
     {
@@ -124,10 +124,10 @@
     {
       "scenario": "S9 生图（base64 PNG）",
       "ok": true,
-      "detail": "16.6s · 1077 KB · PNG 魔数=ok",
+      "detail": "13.1s · 1107 KB · PNG 魔数=ok",
       "extra": {
-        "elapsed_s": 16.6,
-        "kb": 1077,
+        "elapsed_s": 13.1,
+        "kb": 1107,
         "png": true
       }
     },
